@@ -1,5 +1,7 @@
 from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import User, Product, Order
+from django.conf import settings
 
 
 class UserSerializer(ModelSerializer):
@@ -12,6 +14,15 @@ class UserSerializer(ModelSerializer):
 
 
 class ProductSerializer(ModelSerializer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        request = self.context.get('request')
+        lang = 'uz'
+        if request and request.META.get('HTTP_ACCEPT_LANGUAGE') in settings.MODELTRANSLATION_LANGUAGES:
+            lang = request.META.get('HTTP_ACCEPT_LANGUAGE')
+        self.fields['name'] = serializers.CharField(source=f"name_{lang}")
+        self.fields['description'] = serializers.CharField(source=f"description_{lang}")
+
     class Meta:
         model = Product
         fields = ('id', 'name', 'price', 'description', 'image')

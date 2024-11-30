@@ -14,10 +14,18 @@ class UserViewSet(ViewSet):
         tags=['User'],
     )
     def user_create(self, request):
+        data = request.data
+        tg_id = data.get('telegram_id')
+        user = User.objects.filter(telegram_id=tg_id).first()
         serializer = UserSerializer(data=request.data, context={'request': request})
+        lang = False
+        if user:
+            lang = user.language if True else False
+            serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(data={'result': serializer.data, 'ok': True}, status=status.HTTP_201_CREATED)
+        return Response(
+            data={'result': serializer.data, 'ok': True, 'lang': lang}, status=status.HTTP_201_CREATED)
 
     @swagger_auto_schema(
         responses={200: UserSerializer()},
@@ -38,6 +46,16 @@ class UserViewSet(ViewSet):
             return Response(data={'result': '', 'ok': False}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user, context={'request': request})
         return Response(data={'result': serializer.data, 'ok': True}, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        responses={200: UserSerializer()},
+        tags=['User'],
+    )
+    def user_check(self, request, pk):
+        user = User.objects.filter(telegram_id=pk).first()
+        if user is None or user.language in None:
+            return Response(data={'result': '', 'ok': False, 'lang': False}, status=status.HTTP_404_NOT_FOUND)
+        return Response(data={'result': '', 'ok': True}, status=status.HTTP_200_OK)
 
 
 class ProductViewSet(ViewSet):
