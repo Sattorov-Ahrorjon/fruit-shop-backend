@@ -1,1 +1,1 @@
-# online-fruit-shop-backend
+# fruit-shop-backend
