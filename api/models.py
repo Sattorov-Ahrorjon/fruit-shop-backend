@@ -29,6 +29,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='products')
     is_active = models.BooleanField(default=True)
+    amount = models.IntegerField(choices=((1, '1 шт.'), (2, '1 килограмм.')))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

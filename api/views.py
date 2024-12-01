@@ -41,7 +41,7 @@ class UserViewSet(ViewSet):
         tags=['User'],
     )
     def user_detail(self, request, pk):
-        user = User.objects.filter(id=pk).first()
+        user = User.objects.filter(telegram_id=pk).first()
         if not user:
             return Response(data={'result': '', 'ok': False}, status=status.HTTP_404_NOT_FOUND)
         serializer = UserSerializer(user, context={'request': request})
