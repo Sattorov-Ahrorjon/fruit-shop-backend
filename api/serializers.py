@@ -31,4 +31,4 @@ class ProductSerializer(ModelSerializer):
 class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
-        fields = ('id', 'name', 'price', 'total_price', 'count')
+        fields = ('id', 'user', 'name', 'price', 'total_price', 'count')
