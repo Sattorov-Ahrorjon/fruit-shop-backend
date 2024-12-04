@@ -20,7 +20,7 @@ class UserViewSet(ViewSet):
         serializer = UserSerializer(data=request.data, context={'request': request})
         lang = False
         if user:
-            lang = user.language if True else False
+            lang = user.language or False
             serializer = UserSerializer(user, data=request.data, partial=True, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()

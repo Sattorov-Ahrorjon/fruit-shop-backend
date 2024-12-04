@@ -16,7 +16,7 @@ SHOW_SWAGGER = int(os.getenv('DJANGO_SHOW_SWAGGER', 1))
 
 DEBUG = int(os.getenv('DEBUG', 1))
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
