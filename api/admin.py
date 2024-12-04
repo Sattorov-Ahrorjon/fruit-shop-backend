@@ -8,6 +8,12 @@ class UserAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'first_name', 'last_name', 'username')
     search_fields = ('first_name', 'last_name', 'username')
 
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -23,3 +29,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'name', 'user')
     list_filter = ('user', 'price')
     search_fields = ('name', 'user__first_name', 'user__last_name')
+
+    def has_delete_permission(self, request, obj=None):
+        return False
